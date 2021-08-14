@@ -18,12 +18,14 @@ mongoose.connect(DATABASE, {
 const loginRoute = require('./routes/login')
 const registerRoute = require('./routes/register')
 const changePasswordRoute = require('./routes/changePassword')
+const welcomeRoute = require('./routes/welcome')
 
 app.use(express.urlencoded({extended: false}))
 app.use(express.json())
 app.use('', loginRoute)
 app.use('', registerRoute)
 app.use('', changePasswordRoute)
+app.use('', welcomeRoute)
 
 app.listen(process.env.PORT || 5000, () => {
     console.log('Server Started @ 5000')
