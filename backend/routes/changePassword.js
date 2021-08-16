@@ -1,10 +1,12 @@
 const express = require('express')
 const router = express.Router()
+const jwt = require('jsonwebtoken')
 const UserModel = require('../models/users')
 const bcrypt = require('bcryptjs')
+const { SECERET_KEY } = process.env
 
 
-router.post('/changePassword', (req, res) => {
+router.post('/changePassword', async(req, res) => {
     try {
         const { email, password, newPassword } = req.body
 
