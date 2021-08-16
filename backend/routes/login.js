@@ -4,6 +4,7 @@ const UserModel = require('../models/users')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const { SECERET_KEY } = process.env
+const auth = require('../middleware/auth')
 
 
 router.get('/login', (req, res) => {
@@ -24,13 +25,13 @@ router.post('/login', async(req, res) => {
         if (user && (await bcrypt.compare(password, user.password))) {
           
             const token = jwt.sign(
-                { user_id: user._id, email },
+                { user_id: user._id, email, password: user.password},
                 SECERET_KEY,
                 {expiresIn: "2h"})
     
           
             user.token = token;
-    
+            res.cookie('auth', token)
             res.status(200).json(user);
         }else{
 
@@ -41,4 +42,7 @@ router.post('/login', async(req, res) => {
         console.log(err);
     }
 })
+
+
+
 module.exports = router

@@ -22,12 +22,13 @@ router.post('/changePassword', async(req, res) => {
             const changePassword = await UserModel.findByIdAndUpdate(user._id, { password: encryptedPassword })
 
             const token = jwt.sign(
-                { user_id: user._id, email },
+                { user_id: user._id, email, password: encryptedPassword},
                 SECERET_KEY,
                 {expiresIn: "2h"})
     
           
-            user.token = token;
+            user.token = token
+            res.cookie('auth', token)
     
             res.status(200).json(user);
         }else{

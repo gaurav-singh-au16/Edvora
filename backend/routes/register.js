@@ -35,11 +35,12 @@ router.post('/register', async(req, res) => {
         })
 
         const token = jwt.sign(
-            { user_id: user._id, email }, 
+            { user_id: user._id, email, encryptedPassword }, 
             SECERET_KEY,
             {expiresIn: "2h",})
         
         user.token = token
+        res.cookie('auth', token)
 
         res.status(201).json(user);
 
